@@ -7,8 +7,6 @@ let generaredData = require('./generated_data.json')
   return temp;
 });
 
-console.log(generaredData);
-
 let db = {}
 
 const initialData = {
