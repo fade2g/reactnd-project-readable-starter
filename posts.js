@@ -1,11 +1,11 @@
 const clone = require('clone');
 
-let generatedData = require('./generated_data.json')
-  .map((data) => {
-  let temp = {};
-  temp[data.id] = data;
-  return temp;
-});
+const generatedData = require('./generated_data.json');
+
+const generatedDataObject = generatedData.reduce((accumulator, item) => {
+  accumulator[item.id] = item;
+  return accumulator
+}, {});
 
 let db = {};
 
@@ -32,12 +32,12 @@ const initialData = {
   }
 };
 
-const defaultData = Object.assign({}, initialData, generatedData);
+const defaultData = Object.assign({}, initialData, generatedDataObject);
 
 function getData (token) {
   let data = db[token];
-  if (data === null) {
-    data = db[token] = clone(defaultData)
+  if (!data) {
+    data = db[token] = clone(defaultData);
   }
   return data
 }
