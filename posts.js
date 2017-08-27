@@ -1,8 +1,17 @@
-const clone = require('clone')
+const clone = require('clone');
+
+let generaredData = require('./generated_data.json')
+  .map((data) => {
+  let temp = {}
+  temp[data.id] = data;
+  return temp;
+});
+
+console.log(generaredData);
 
 let db = {}
 
-const defaultData = {
+const initialData = {
   "8xf0y6ziyjabvozdd253nd": {
     id: '8xf0y6ziyjabvozdd253nd',
     timestamp: 1467166872634,
@@ -11,7 +20,7 @@ const defaultData = {
     author: 'thingtwo',
     category: 'react',
     voteScore: 6,
-    deleted: false 
+    deleted: false
   },
   "6ni6ok3ym7mf1p33lnez": {
     id: '6ni6ok3ym7mf1p33lnez',
@@ -24,6 +33,8 @@ const defaultData = {
     deleted: false
   }
 }
+
+const defaultData = Object.assign({}, initialData, generaredData);
 
 function getData (token) {
   let data = db[token]
@@ -46,7 +57,7 @@ function get (token, id) {
   return new Promise((res) => {
     const posts = getData(token)
     res(
-      posts[id].deleted 
+      posts[id].deleted
         ? {}
         : posts[id]
     )
@@ -65,7 +76,7 @@ function getAll (token) {
 function add (token, post) {
   return new Promise((res) => {
     let posts = getData(token)
-    
+
     posts[post.id] = {
       id: post.id,
       timestamp: post.timestamp,
@@ -76,7 +87,7 @@ function add (token, post) {
       voteScore: 1,
       deleted: false
     }
-     
+
     res(posts[post.id])
   })
 }
